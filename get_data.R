@@ -1,10 +1,5 @@
-require(readr)
-require(dplyr)
-require(purrr)
-require(stringr)
-require(lubridate)
 
-get_tidy_data <- function() {
+get_data <- function() {
     
     data_folder <- file.path(getwd(), "data")
     data_name <- "household_power_consumption"
@@ -40,42 +35,23 @@ get_tidy_data <- function() {
     }
     
     
-    rwd <- read_csv2(data_file, na = "?", col_types = cols(Time = col_character()))
+    #rwd <- read_csv2(data_file, na = "?", col_types = cols(Time = col_character()))
     
     
-    if( (dim(rwd)[1] != 2075259) || (dim(rwd)[2] != 9) ) {
-        stop("Data has wrong format")
-    }
+    #if( (dim(rwd)[1] != 2075259) || (dim(rwd)[2] != 9) ) {
+    #    stop("Data has wrong format")
+    #}
     
-    names(rwd) <- map_chr(names(rwd), function(x) {
-        x %>%
-            strsplit("_") %>%
-            first %>%
-            str_to_title %>%
-            reduce(paste0)
-    } )
-    
-    tidy_data <- rwd %>%
-        mutate(DateTime = as.POSIXct(strptime(paste(Date, Time), format = "%d/%m/%Y %H:%M:%S"))) %>%
-        select(-Date, -Time) %>%
-        mutate(GlobalActivePower = as.double(GlobalActivePower)) %>%
-        mutate(GlobalReactivePower = as.double(GlobalReactivePower)) %>%
-        mutate(GlobalIntensity = as.double(GlobalIntensity)) %>%
-        mutate(SubMetering1 = as.integer(as.double(SubMetering1))) %>%
-        mutate(SubMetering2 = as.integer(as.double(SubMetering2))) %>%
-        mutate(SubMetering3 = as.integer(as.double(SubMetering3))) %>%
-        mutate(Voltage = Voltage / 1000)    
 }
 
 ret <<- NULL
 
-get_filtered_data <- function() {
+get_data <- function() {
     
     if(!is.null(ret)) {
         return(ret)
     }
     
-    ret <<- get_tidy_data() %>%
-        filter( (DateTime >= ymd(20070201)) & (DateTime < ymd(20070203) ) )
+    ret <<- get_data()
 }
 
