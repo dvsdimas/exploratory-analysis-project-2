@@ -2,9 +2,10 @@
 get_data <- function() {
     
     data_folder <- file.path(getwd(), "data")
-    data_name <- "household_power_consumption"
-    data_file <- file.path(data_folder, paste0(data_name, ".txt"))
-    data_url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+    
+    file_source <- file.path(data_folder, "Source_Classification_Code.rds")
+    file_summary <- file.path(data_folder, "summarySCC_PM25.rds")
+    
     
     if(!dir.exists(data_folder)) {
         dir.create(data_folder)
@@ -14,12 +15,14 @@ get_data <- function() {
         }
     }
     
-    if(!file.exists(data_file)) {
+    if(!file.exists(file_source) || !file.exists(file_summary)) {
         
-        zip_file <- file.path(data_folder, paste0(data_name, ".zip"))
+        zip_file <- file.path(data_folder, "exdata.zip")
         
         if(!file.exists(zip_file)) {
-            
+    
+            data_url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
+                    
             download.file(data_url, destfile = zip_file)
             
             if(!file.exists(zip_file)) {
@@ -29,24 +32,31 @@ get_data <- function() {
         
         unzip(zip_file, exdir = data_folder)
         
-        if(!file.exists(data_file)) {
+        if(!file.exists(file_source) || !file.exists(file_summary)) {
             stop(paste0("Cannot unpack zip file : ", zip_file))
         }
+        
+        unlink(zip_file)
     }
     
+    NEI <- readRDS(file_summary)
     
-    #rwd <- read_csv2(data_file, na = "?", col_types = cols(Time = col_character()))
+    if( (dim(NEI)[1] != 6497651) || (dim(NEI)[2] != 6) ) {
+        stop("NEI data has wrong format")
+    }
     
+    SCC <- readRDS(file_source)
     
-    #if( (dim(rwd)[1] != 2075259) || (dim(rwd)[2] != 9) ) {
-    #    stop("Data has wrong format")
-    #}
+    if( (dim(SCC)[1] != 11717) || (dim(SCC)[2] != 15) ) {
+        stop("SCC data has wrong format")
+    }
     
+    list(NEI = NEI, SCC = SCC)
 }
 
 ret <<- NULL
 
-get_data <- function() {
+get_cdata <- function() {
     
     if(!is.null(ret)) {
         return(ret)
