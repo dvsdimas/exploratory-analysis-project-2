@@ -20,6 +20,7 @@ trend <- D$NEI %>%
 png("plot3.png", width = 480, height = 480)
 
 ggplot(trend, aes(year, mean)) + geom_line(aes(colour = type), size = 1) + 
+    geom_point(aes(colour = type), size = 2) +
     ggtitle("Emissions PM2.5 has decreased in the Baltimore City, MD") + 
     labs(x = "Year", y = "Emissions PM2.5, tons")
 
