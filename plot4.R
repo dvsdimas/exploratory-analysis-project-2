@@ -20,7 +20,10 @@ trend <- D$SCC %>%
 
 png("plot4.png", width = 480, height = 480)    
 
-ggplot(trend, aes(year, mean)) + geom_line(aes(group=1)) + geom_point() + 
+ggplot(data = trend, aes(x = year, y = mean, colour = mean)) + 
+    geom_point(size = 3) +
+    geom_smooth(aes(color=..y..)) +
+    scale_colour_gradient(limits = range(trend$mean), low = "lightgreen", high = "red") + 
     ggtitle("Emissions PM2.5 from coal combustion-related sources across the US") + 
     labs(x = "Year", y = "Emissions PM2.5, tons")
 
