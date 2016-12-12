@@ -16,9 +16,8 @@ png("plot5.png", width = 480, height = 480)
 
 ggplot(data = trend, aes(x = year, y = mean, colour = mean)) + 
     geom_point(size = 3) +
-    geom_smooth(aes(color=..y..), method = "loess") +
-    scale_colour_gradient(limits=range(trend$mean), low="lightgreen", high="red") +
-
+    geom_smooth(aes(color=..y..)) +
+    scale_colour_gradient(limits = range(trend$mean), low = "lightgreen", high = "red") +
     ggtitle("Emissions PM2.5 from motor vehicle sources in Baltimore City") + 
     labs(x = "Year", y = "Emissions PM2.5, tons")
 
