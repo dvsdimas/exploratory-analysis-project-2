@@ -15,7 +15,7 @@ trend <- D$NEI %>%
 
 png("plot1.png", width = 480, height = 480)
 
-plot(trend$year, trend$mean, main = "Total emissions PM2.5 has decreased in the United States", 
-     ylab = "PM2.5 emissions in the US, tons", xlab = "Year", type = "l")
+plot(trend$year, trend$mean, main = "Total emissions PM2.5 in the United States", 
+     ylab = "PM2.5, tons", xlab = "Year", type = "l")
 
 dev.off()
