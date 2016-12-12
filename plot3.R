@@ -9,17 +9,16 @@ D <- get_cdata()
 # which of these four sources have seen decreases in emissions from 1999–2008 for Baltimore City? 
 # Which have seen increases in emissions from 1999–2008? Use the ggplot2 plotting system to make a plot answer this question.
 
-
 trend <- D$NEI %>%
     filter(fips == "24510") %>%
     mutate(type = as.factor(type)) %>%
     group_by(type, year) %>%
     summarise(mean = mean(Emissions, na.rm = TRUE))
 
-
 png("plot3.png", width = 480, height = 480)
 
-ggplot(trend, aes(year, mean)) + geom_line(aes(colour = type), size = 1) + 
+ggplot(trend, aes(year, mean)) + 
+    geom_smooth(aes(colour = type), size = 1) +
     geom_point(aes(colour = type), size = 2) +
     ggtitle("Emissions PM2.5 has decreased in the Baltimore City, MD") + 
     labs(x = "Year", y = "Emissions PM2.5, tons")
